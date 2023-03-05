@@ -1,7 +1,9 @@
 package com.nrahul32.movieapp;
 
 import com.nrahul32.movieapp.dao.CustomerDao;
+import com.nrahul32.movieapp.dao.MovieDao;
 import com.nrahul32.movieapp.entities.Customer;
+import com.nrahul32.movieapp.entities.Movie;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -46,6 +48,34 @@ public class MovieappApplication {
 		System.out.println("Before deleting: " + customerDao.findById(customer.getCustomerId()));
 		customerDao.delete(customer);
 		System.out.println("After deleting: " + customerDao.findById(customer.getCustomerId()));
+
+		// Creating a Movie object
+		MovieDao movieDao = context.getBean(MovieDao.class);
+		Movie movie = new Movie();
+		movie.setMovieName("Avengers");
+		movie.setMovieDescription("A super hero movie by marvel");
+		movie.setReleaseDate(LocalDateTime.of(2005, 7,4,12,0));
+		movie.setCoverPhotoUrl("Cover photo url");
+		movie.setTrailerUrl("Trailer photo url");
+
+		// Save operation
+		System.out.println("Before saving: " + movie.toString());
+		Movie savedMovie = movieDao.save(movie);
+		System.out.println("After saving: " + savedMovie.toString());
+
+		// Finding movie by Id
+		Movie retrievedMovie = movieDao.findById(movie.getMovieId()).orElse(null);
+		System.out.println("After retrieving: " + retrievedMovie);
+
+		// Updating
+		movie.setDuration(160);
+		Movie updatedMovie = movieDao.save(movie);
+		System.out.println("After updating: " + updatedMovie.toString());
+
+		// Deleting
+		movieDao.delete(movie);
+		System.out.println("After deleting: " + movieDao.findById(movie.getMovieId()).orElse(null));
+
 	}
 
 	// This will be hit on navigating to http://localhost:8080/
