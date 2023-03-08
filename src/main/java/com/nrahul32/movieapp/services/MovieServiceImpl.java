@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -55,5 +57,16 @@ public class MovieServiceImpl implements MovieService{
         }
         _movieDao.delete(savedMovie);
         return true;
+    }
+
+    // All movies will not be actually inserted in the DB until all the movies are ready to be stored
+    @Override
+    @Transactional
+    public List<Movie> AcceptMultipleMovieDetails(List<Movie> movies) {
+        List<Movie> savedMovies = new ArrayList<>();
+        for(Movie movie : movies) {
+            savedMovies.add(acceptMovieDetails(movie));
+        }
+        return savedMovies;
     }
 }

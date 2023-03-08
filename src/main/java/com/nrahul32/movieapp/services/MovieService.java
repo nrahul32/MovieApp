@@ -14,5 +14,6 @@ public interface MovieService {
     public List<Movie> getAllMovies();
     public Page<Movie> getPaginatedMovieDetails(Pageable pageRequest);
     public boolean deleteMovie(int id);
+    public List<Movie> AcceptMultipleMovieDetails(List<Movie> movies);
 
 }
