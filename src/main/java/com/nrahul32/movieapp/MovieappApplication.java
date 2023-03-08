@@ -4,6 +4,7 @@ import com.nrahul32.movieapp.dao.CustomerDao;
 import com.nrahul32.movieapp.dao.MovieDao;
 import com.nrahul32.movieapp.entities.Customer;
 import com.nrahul32.movieapp.entities.Movie;
+import com.nrahul32.movieapp.services.MovieService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -76,6 +77,21 @@ public class MovieappApplication {
 		movieDao.delete(movie);
 		System.out.println("After deleting: " + movieDao.findById(movie.getMovieId()).orElse(null));
 
+		// Testing Movie service
+		MovieService movieService = context.getBean(MovieService.class);
+		System.out.println("MovieService bean :" + movieService);
+		Movie movie1 = new Movie();
+		movie1.setMovieName("Avengers");
+		movie1.setMovieDescription("A super hero movie by marvel");
+		movie1.setReleaseDate(LocalDateTime.of(2005, 7,4,12,0));
+		movie1.setCoverPhotoUrl("Cover photo url");
+		movie1.setTrailerUrl("Trailer photo url");
+
+		Movie addedMovie = movieService.acceptMovieDetails(movie1);
+		System.out.println("After saving: " + addedMovie.toString());
+
+		Movie searchedMovie = movieService.getMovieDetails(addedMovie.getMovieId());
+		System.out.println("Searched movie: " + searchedMovie.toString());
 	}
 
 	// This will be hit on navigating to http://localhost:8080/
